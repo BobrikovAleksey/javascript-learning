@@ -1,8 +1,11 @@
 function History(props) {
   const history = props.history.map((step, move) => {
+    const caption = (move > 0) ? `Go to move #${move}` : 'Play again';
+    const position = (move > 0) ? (<b>{ `: C${step.col}R${step.row}` }</b>) : '';
     return (<li key={ move }>
       <button onClick={() => props.handleClick(move)}>
-        {(move > 0) ? `Go to move #${move}` : 'Play again'}
+        { caption }
+        { position }
       </button>
     </li>)
   }).reverse();

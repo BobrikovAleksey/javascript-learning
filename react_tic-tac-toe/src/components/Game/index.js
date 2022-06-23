@@ -61,7 +61,12 @@ class Game extends React.Component {
     if (this.squares[i] || this.gameOver) return;
     const squares = this.squares.slice();
     squares[i] = this.nextPlayer;
-    this.state.history.push({ squares });
+    this.state.history.push({
+      col: (i - 1) % 3 + 1,
+      row: Math.floor((i - 1) / 3 + 1),
+      player: this.nextPlayer,
+      squares,
+    });
     this.setState({ ...this.state, winner: findWinner(squares) });
   };
 
