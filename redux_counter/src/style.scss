@@ -1,0 +1,23 @@
+body {
+  transition: .2s all ease-in;
+
+  &.dark {
+    background: #343a40;
+    color: white;
+
+    & hr {
+      border-top: 1px solid rgba(0, 0, 0, .9);
+    }
+
+    & .card {
+      background: #343a40;
+      border: 1px solid rgba(0, 0, 0, .875);
+    }
+  }
+}
+
+.heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
