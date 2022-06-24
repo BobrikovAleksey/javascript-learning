@@ -3,7 +3,8 @@ function Board(props) {
     const shift = i * 3;
     const row = [shift, 1 + shift, 2 + shift].map((k) => {
       const value = props.cells[k];
-      return <button className={ `board-cell ${value ? 'disabled' : ''}` }
+      const active = props.wonline?.includes(k);
+      return <button className={ `board-cell ${active ? 'active' : ''} ${value ? 'disabled' : ''}` }
                      onClick={ () => props.handleClick(k) }
                      key={ k }>{ value }</button>;
     });

@@ -1,50 +1,109 @@
-body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
-};
-
-ol, ul {
-  padding-left: 30px;
-};
-
-.game {
-  display: flex;
-  flex-direction: row;
-
-  &-info {
-    margin-left: 20px;
-  };
-};
-
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
-};
-
-.status {
-  margin-bottom: 10px;
-};
-
-.board-cell {
-  background: #fff;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
+* {
+  box-sizing: border-box;
+  margin: 0;
   padding: 0;
-  text-align: center;
-  width: 34px;
 
   &:focus {
     outline: none;
-  };
-};
+  }
+}
 
-.kbd-navigation .board-cell:focus {
-  background: #ddd;
-};
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+}
+
+.game {
+  display: flex;
+  justify-content: center;
+
+  &-board {
+    margin-top: 20px;
+  }
+
+  &-info {
+    margin-left: 20px;
+    width: 200px;
+  }
+
+  &-status {
+    font-size: 16px;
+  }
+
+  &-history {
+    margin-left: 20px;
+  }
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  cursor: pointer;
+
+  &-row {
+    display: flex;
+    margin-top: -1px;
+
+    &:after {
+      content: "";
+      display: table;
+    }
+  }
+
+  &-cell {
+    background-color: inherit;
+    border: 1px solid silver;
+    cursor: inherit;
+    font-size: 24px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 34px;
+    margin-right: -1px;
+    text-align: center;
+    width: 34px;
+
+    &.disabled.active, &.active {
+      background-color: deepskyblue;
+      cursor: default;
+    }
+  }
+
+  &.disabled, &-cell.disabled {
+    background-color: whitesmoke;
+    cursor: default;
+  }
+}
+
+.status {
+
+}
+
+.history {
+  margin-top: 10px;
+
+  &-reverse {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    margin-left: -20px;
+
+    & span {
+      margin-left: 5px;
+    }
+  }
+
+  &-list {
+    margin-top: 5px;
+  }
+
+  &-item {
+    &:not(:first-of-type) {
+      margin-top: 2.5px;
+    }
+
+    & button {
+      cursor: pointer;
+      padding: 2.5px 5px;
+    }
+  }
+}

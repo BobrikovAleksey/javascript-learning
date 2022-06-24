@@ -6,9 +6,9 @@ import { Status } from './Status';
 
 /**
  * @param {string|null[]} cells
- * @returns {string|boolean}
+ * @returns {Array|null}
  */
-const findWinner = (cells) => {
+const findWonline = (cells) => {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -22,9 +22,9 @@ const findWinner = (cells) => {
   for (let i = 0; i < lines.length; i += 1) {
     const [ a, b, c ] = lines[i];
     const cellA = cells[a], cellB = cells[b], cellC = cells[c];
-    if (cellA && cellB === cellA && cellC === cellA) return cellA;
+    if (cellA && cellB === cellA && cellC === cellA) return lines[i];
   }
-  return false;
+  return null;
 };
 
 class Game extends React.Component {
@@ -32,6 +32,7 @@ class Game extends React.Component {
     history: [{
       cells: new Array(9).fill(null),
     }],
+    wonline: null,
     winner: null,
   }
 
@@ -60,57 +61,44 @@ class Game extends React.Component {
       row: Math.floor(i / 3 + 1),
       player: this.nextPlayer,
     });
-    this.setState({ ...this.state, winner: findWinner(cells) });
+    const wonline = findWonline(cells);
+    const winner = wonline ? cells[wonline[0]] : null;
+    this.setState({ ...this.state, wonline, winner });
   };
 
   handleHistoryClick = (move) => {
     const history = this.state.history.slice(0, move + 1);
-    const winner = findWinner(history[history.length - 1].cells);
-    this.setState({ ...this.state, history, winner });
+    const { cells } = history[history.length - 1];
+    const wonline = findWonline(cells);
+    const winner = wonline ? cells[wonline[0]] : null;
+    this.setState({ ...this.state, history, wonline, winner });
   }
 
   renderBoard() {
-    return (
-      <Board
-        cells={ this.cells }
-        gameOver={ this.gameOver }
-        handleClick={ this.handleBoardClick }
-      />
-    );
+    return <Board cells={ this.cells }
+                  wonline={ this.state.wonline }
+                  gameOver={ this.gameOver }
+                  handleClick={ this.handleBoardClick }/>;
   }
 
   renderHistory() {
-    return (
-      <History
-        history={ this.state.history }
-        handleClick={ this.handleHistoryClick }
-      />
-    );
+    return <History history={ this.state.history }
+                    handleClick={ this.handleHistoryClick }/>;
   }
 
   renderStatus() {
-    return (
-      <Status
-      gameOver={ this.gameOver }
-      nextPlayer={ this.nextPlayer }
-      winner={ this.state.winner }
-    />
-    );
+    return <Status gameOver={ this.gameOver }
+                   nextPlayer={ this.nextPlayer }
+                   winner={ this.state.winner }/>;
   }
 
   render() {
     return (
       <div className="game">
-        <div className="game-board">
-          { this.renderBoard() }
-        </div>
+        <div className="game-board">{ this.renderBoard() }</div>
         <div className="game-info">
-          <div className="game-status">
-            { this.renderStatus() }
-          </div>
-          <div className="game-history">
-            { this.renderHistory() }
-          </div>
+          <div className="game-status">{ this.renderStatus() }</div>
+          <div className="game-history">{ this.renderHistory() }</div>
         </div>
       </div>
     );
@@ -120,5 +108,3 @@ class Game extends React.Component {
 export {
   Game,
 };
-
-export default Game;

@@ -29,7 +29,7 @@ class History extends React.Component {
       <label className="history-reverse">
         <input type="checkbox" checked={ this.state.reversed }
                onChange={ () => this.handleReverseChange() }/>
-        Reverse order
+        <span>Reverse order</span>
       </label>
       <ol className="history-list"
           reversed={ this.state.reversed }>{ this.renderList() }</ol>
