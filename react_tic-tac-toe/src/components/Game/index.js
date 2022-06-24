@@ -5,25 +5,24 @@ import { History } from './History';
 import { Status } from './Status';
 
 /**
- * Определяет победителя
- * @param {string|null[]} squares
+ * @param {string|null[]} cells
  * @returns {string|boolean}
  */
-const findWinner = (squares) => {
+const findWinner = (cells) => {
   const lines = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
     [1, 4, 7],
     [2, 5, 8],
-    [3, 6, 9],
-    [1, 5, 9],
-    [3, 5, 7],
+    [0, 4, 8],
+    [2, 4, 6],
   ];
   for (let i = 0; i < lines.length; i += 1) {
     const [ a, b, c ] = lines[i];
-    const A = squares[a], B = squares[b], C = squares[c];
-    if (A && B === A && C === A) return A;
+    const cellA = cells[a], cellB = cells[b], cellC = cells[c];
+    if (cellA && cellB === cellA && cellC === cellA) return cellA;
   }
   return false;
 };
@@ -31,7 +30,7 @@ const findWinner = (squares) => {
 class Game extends React.Component {
   state = {
     history: [{
-      squares: new Array(9).fill(null),
+      cells: new Array(9).fill(null),
     }],
     winner: null,
   }
@@ -46,51 +45,57 @@ class Game extends React.Component {
     return (history.length % 2 === 1) ? 'X' : 'O';
   }
 
-  get squares() {
+  get cells() {
     const { history } = this.state;
-    return history[history.length - 1].squares;
-  }
-
-  handleHistoryClick = (move) => {
-    const history = this.state.history.slice(0, move + 1);
-    const winner = findWinner(history[history.length - 1].squares);
-    this.setState({ ...this.state, history, winner });
+    return history[history.length - 1].cells;
   }
 
   handleBoardClick = (i) => {
-    if (this.squares[i] || this.gameOver) return;
-    const squares = this.squares.slice();
-    squares[i] = this.nextPlayer;
+    if (this.cells[i] || this.gameOver) return;
+    const cells = this.cells.slice();
+    cells[i] = this.nextPlayer;
     this.state.history.push({
-      col: (i - 1) % 3 + 1,
-      row: Math.floor((i - 1) / 3 + 1),
+      cells,
+      col: i % 3 + 1,
+      row: Math.floor(i / 3 + 1),
       player: this.nextPlayer,
-      squares,
     });
-    this.setState({ ...this.state, winner: findWinner(squares) });
+    this.setState({ ...this.state, winner: findWinner(cells) });
   };
 
+  handleHistoryClick = (move) => {
+    const history = this.state.history.slice(0, move + 1);
+    const winner = findWinner(history[history.length - 1].cells);
+    this.setState({ ...this.state, history, winner });
+  }
+
   renderBoard() {
-    return (<Board
-      cells={ this.squares }
-      gameOver={ this.gameOver }
-      handleClick={ this.handleBoardClick }
-    />);
+    return (
+      <Board
+        cells={ this.cells }
+        gameOver={ this.gameOver }
+        handleClick={ this.handleBoardClick }
+      />
+    );
   }
 
   renderHistory() {
-    return (<History
-      history={ this.state.history }
-      handleClick={ this.handleHistoryClick }
-    />);
+    return (
+      <History
+        history={ this.state.history }
+        handleClick={ this.handleHistoryClick }
+      />
+    );
   }
 
   renderStatus() {
-    return (<Status
+    return (
+      <Status
       gameOver={ this.gameOver }
       nextPlayer={ this.nextPlayer }
       winner={ this.state.winner }
-    />);
+    />
+    );
   }
 
   render() {
@@ -100,10 +105,10 @@ class Game extends React.Component {
           { this.renderBoard() }
         </div>
         <div className="game-info">
-          <div>
+          <div className="game-status">
             { this.renderStatus() }
           </div>
-          <div>
+          <div className="game-history">
             { this.renderHistory() }
           </div>
         </div>
