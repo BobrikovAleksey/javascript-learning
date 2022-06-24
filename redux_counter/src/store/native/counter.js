@@ -17,7 +17,7 @@ const render = () => {
 };
 
 asyncBtn.addEventListener('click', () => {
-  setTimeout(() => { change(1) }, 1000);
+  setTimeout(() => { change(1) }, 2500);
 });
 
 decBtn.addEventListener('click', () => { change(-1) });

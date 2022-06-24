@@ -1,4 +1,6 @@
 import 'bootstrap/scss/bootstrap.scss';
 import './style.scss';
 
-import './scripts/native/store';
+// import './store/native';
+import './store/reduxReplica';
+// import './store/redux';

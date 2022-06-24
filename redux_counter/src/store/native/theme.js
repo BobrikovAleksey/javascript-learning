@@ -14,4 +14,5 @@ themeBtn.addEventListener('click', () => {
   state.darkTheme = !state.darkTheme;
   render();
 });
+
 render();
