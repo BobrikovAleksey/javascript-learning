@@ -4,7 +4,7 @@ const initialState: TodoState = {
   todos: [],
   isLoading: false,
   error: null,
-  page: 0,
+  page: 1,
   limit: 10,
 };
 
