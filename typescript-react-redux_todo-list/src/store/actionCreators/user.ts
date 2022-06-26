@@ -11,8 +11,8 @@ const fetchUsers = () => {
     } catch (e) {
       dispatch({ type: UserActionTypes.FETCH_USERS_ERROR, payload: 'Error' });
     }
-  }
-}
+  };
+};
 
 export {
   fetchUsers,
